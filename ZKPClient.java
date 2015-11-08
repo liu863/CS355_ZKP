@@ -14,7 +14,9 @@ public class ZKPClient {
     public static void main(String[] args) throws IOException {
         System.out.println(args[0]);
         String serverAddress = args[0];
-         System.out.println("flag-1");
+
+        System.out.println("flag-1");
+
         Socket s = new Socket(serverAddress, 2334);
         System.out.println("flag0");
         BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));

@@ -16,8 +16,13 @@ public class ZKPServer {
 		try {
 		    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 		    BufferedReader in = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()));
-
-		    out.println("Hi, there");
+		    String inputLine, outputLine;
+			while ( ( inputLine = in.readLine() ) != null) {
+		        if ( inputLine.equals("123") ) 
+		        	out.println("456");
+		        if ( inputLine.equals("789") ) 
+		        	out.println("456");
+    		}
 		}
 		finally {
 			serverSocket.close();
