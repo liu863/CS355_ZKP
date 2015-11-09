@@ -36,7 +36,7 @@ public class Graph {
     }
     
     public Graph isomorphism(int[] p) {
-        
+        return this;
     }
     
     /*
