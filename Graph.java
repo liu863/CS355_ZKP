@@ -14,6 +14,11 @@ public class Graph {
         }    
     }
     
+    //str = n|xx..x
+    public Graph(String str) {
+        
+    }
+    
     public boolean link(int x, int y) {
         if (adjmatrix[x][y] == 1)
             return true;
@@ -36,6 +41,14 @@ public class Graph {
     }
     
     public Graph isomorphism(int[] p) {
+        int[][] iso = new int[vnum][vnum];
+        
+        
+        Graph g = new Graph(iso, vnum);
+        return g;
+    }
+    
+    public Graph commitment(int ran) {
         return this;
     }
     
