@@ -4,7 +4,7 @@ JC = javac
 .java.class:
 	$(JC) $(JFLAGS) $*.java
 
-CLASSES = ZKPServer.java ZKPClient.java
+CLASSES = ZKPServer.java ZKPClient.java Graph.java ZKPUI.java
         
 
 default: classes
