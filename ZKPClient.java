@@ -11,29 +11,42 @@ import java.util.Date;
 
 public class ZKPClient {
 
+    private Socket s;
+
+    public ZKPClient ( String addr ) {
+        String serverAddress = addr; 
+        try {
+            s = new Socket(serverAddress, 2334);
+        } catch ( IOException e ) {
+            ;
+        }
+        
+    }
+
     public static void main(String[] args) throws IOException {
-        System.out.println(args[0]);
-        try
-        {
-            String serverAddress = args[0];
-            Socket s = new Socket(serverAddress, 2334);
+        /* establish connection with server */
+        ZKPClient client = new ZKPClient(args[0]);
+        String ret = client.send ("123");
+        System.out.println("Main received : " + ret );
+
+    }
+
+    public int[] rdper(int len) { return null; }
+
+    public String send(String str) {
+        String line = null; 
+        try {
             BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
-            String line;
             PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-            out.println("123");
-            while ((line=input.readLine()) != null){
-                System.out.println(line);
-                if (line.equals("456")){
-                    out.println("789");
-                }
-            }
-            s.close();
-            System.exit(0);
-        }catch(IOException e)
-        {
+            out.println( str );
+            while ( (line = input.readLine()) == null );
+            System.out.println(line);
+            if ( line.equals("exit") )
+                s.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return line;
     }
     
 }
