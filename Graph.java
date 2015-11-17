@@ -1,8 +1,8 @@
 import java.lang.*;
 
 public class Graph {
-    int[][] adjmatrix;
-    int vnum;
+    private int[][] adjmatrix;
+    private int vnum;
     
     public Graph(int[][] matrix, int num) {
         vnum = num;
@@ -12,6 +12,14 @@ public class Graph {
                 adjmatrix[i][j] = matrix[i][j];
             }
         }    
+    }
+
+    public int getv(int x, int y) {
+        return adjmatrix[x][y];
+    }
+
+    public int getvnum() {
+        return vnum;
     }
     
     //str = n|xx..x
@@ -70,6 +78,21 @@ public class Graph {
         Graph commit = new Graph(com, vnum);
         return commit;
     }
+
+    public boolean compareTo(Graph g) {
+        if ( vnum != g.getvnum() )
+            return false;
+        for (int i = 0; i < g.getvnum(); i++) {
+            for (int j = 0; j < g.getvnum(); j++) {
+                if (adjmatrix[i][j] != g.getv(i, j))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    
+
     
     /*
     public static void main(String[] ris) {
