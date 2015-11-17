@@ -39,7 +39,7 @@ public class Graph {
         return vnum;
     }
     
-    public String tostring() {
+    public String toString() {
         String str = vnum + "|";
         for (int i = 0; i < vnum; i++) {
             for (int j = 0; j < vnum; j++) {
@@ -71,13 +71,13 @@ public class Graph {
         return commit;
     }
     
-    
+    /*
     public static void main(String[] ris) {
         //int[][] adj = {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
-        Graph g = new Graph("4|0111101011011010");
-        System.out.println(g.tostring());
-        Graph gc = g.commitment(365792);
-        System.out.println(gc.tostring());
+        Graph g = new Graph("4|0101101101001100");
+        System.out.println(g);
+        Graph gc = g.commitment(677);
+        System.out.println(gc);
     }
-    
+    */
 }
