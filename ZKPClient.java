@@ -21,7 +21,8 @@ public class ZKPClient {
     private static int[] subgraph;        //vertices in subgraph g2p
     private static int[] isomorphism;     //isomorphic permutation from g2p to g2
     
-    private static int random;  //random number to commit graph
+    private static int[][] rand_matrix;  //random number matrix to commit graph
+    private static int[][] sub_rand_matrix;
     
     public ZKPClient ( String addr ) {
         String serverAddress = addr; 
@@ -35,6 +36,7 @@ public class ZKPClient {
     }
     
     public static void main(String[] args) throws IOException {
+        
         //input file name
         String infile = args[1];
         Scanner sc = new Scanner(infile);
@@ -68,9 +70,12 @@ public class ZKPClient {
         String g1s = vnum + "|";
         g1s = g1s.concat(sc.nextLine());
         g1 = new Graph(g1s);
-      
         
+        /* Initialize random matrix and flags */
+        rand_matrix = gen_randmatrix(vnum);
+        sub_rand_matrix = gen_sub_randmatrix(rand_matrix, g2); 
         sflag = 0;
+
         /* establish connection with server */
         ZKPClient client = new ZKPClient(args[0]);
         String ret = client.send ("123");
@@ -83,9 +88,7 @@ public class ZKPClient {
         System.out.println("Client received : " + ret );
         
     }
-    
-    public int[] rdper(int len) { return null; }
-    
+
     public String send(String str) {
         if ( sflag == 0 ) {
             System.out.println( "err: socket non-exists" );
@@ -106,6 +109,31 @@ public class ZKPClient {
             e.printStackTrace();
         }
         return line;
+    }
+
+    public static int[][] gen_randmatrix( int vnum ) {
+        int[][] randm = new int[vnum][vnum];
+        for (int i = 0; i < vnum; i++) {
+            for (int j = 0; j < vnum; j++) {
+                randm[i][j] = 10000 + (int)( Math.random() * 90000  );
+            }
+        } 
+        return randm;
+    }
+
+    public static int[][] gen_sub_randmatrix( int[][] randm, Graph subgraph ) {
+        int vnum = subgraph.getvnum();
+        int[][] sub_randm = new int[vnum][vnum];
+        for (int i = 0; i < vnum; i++) {
+            for (int j = 0; j < vnum; j++) {
+                if ( subgraph.getv(i,j) == 1 ) 
+                    sub_randm[i][j] = randm[i][j];
+                else 
+                    sub_randm[i][j] = 0;
+                
+            }
+        } 
+        return sub_randm;
     }
     
 }

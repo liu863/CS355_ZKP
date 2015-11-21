@@ -2,6 +2,7 @@ import java.lang.*;
 
 public class Graph {
     private int[][] adjmatrix;
+    private int[][] randmatrix;
     private int vnum;
     
     public Graph(int[][] matrix, int num) {
@@ -68,18 +69,18 @@ public class Graph {
         return g;
     }
     
-    public Graph commitment(int ran) {
+    public Graph commitment(int[][] ran) {
         int[][] com = new int[vnum][vnum];
         for (int i = 0; i < vnum; i++) {
             for (int j = 0; j < vnum; j++) {
-                com[i][j] = ((adjmatrix[i][j] + i + j) ^ ran) % 10;
+                com[i][j] = ((adjmatrix[i][j] + i + j) ^ ran[i][j]) % 10;
             }
         }
         Graph commit = new Graph(com, vnum);
         return commit;
     }
 
-    public boolean compareTo(Graph g) {
+    public boolean equals(Graph g) {
         if ( vnum != g.getvnum() )
             return false;
         for (int i = 0; i < g.getvnum(); i++) {
@@ -91,8 +92,17 @@ public class Graph {
         return true;
     }
 
-    
-
+    public boolean isSubgraphOf(Graph g) {
+        if ( vnum != g.getvnum() )
+            return false;
+        for (int i = 0; i < g.getvnum(); i++) {
+            for (int j = 0; j < g.getvnum(); j++) {
+                if ( ( adjmatrix[i][j] == 1 ) && ( g.getv(i,j) != 1 ) )
+                    return false;
+            }
+        }
+        return true;
+    }
     
     /*
     public static void main(String[] ris) {
