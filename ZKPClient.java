@@ -175,8 +175,8 @@ public class ZKPClient {
                 isomorphism[i] = Integer.parseInt(sc.nextLine());
             }
             
-            /*
-            //add original permutation
+            
+            //add original permutation, iteration still 0
             int[] permutation = new int[vnum];
             for(int i = 0; i < vnum; i++){
                 permutation[i] = i;
@@ -188,12 +188,14 @@ public class ZKPClient {
             }
             s = sb.toString();
             iso_perm.put(s,iteration);
-            iteration += 1;
             
-            for (int i = 0; i < vnum; i++) {
-                isomorphism[i] = Character.getNumericValue(iso.charAt(i));
+            //add isomorphism permutation, iteration still 0
+            for (int i : isomorphism) {
+                sb.append(i);
             }
-            */
+            s = sb.toString();
+            iso_perm.put(s,iteration);
+            
             
             //read g1
             String g1s = vnum + "|";
