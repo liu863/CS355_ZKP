@@ -10,6 +10,8 @@ public class ZKPClient {
     private Socket s;
     private int sflag;
     
+    public int vnum;
+    
     private Graph g1;   //iso to g2p
     private Graph g2;   //larger graph
     private Graph g2p;  //subgraph of g2, iso to g1
@@ -24,7 +26,7 @@ public class ZKPClient {
     private Integer iteration;
     
     public ZKPClient() {
-    
+        iteration = 0;
     }
     
     
@@ -49,6 +51,12 @@ public class ZKPClient {
         
         ZKPClient read = new ZKPClient();
         read.readgraph("graph.txt");
+        for (int i = 0; i < 100; i++) {
+            int[] temp = read.rand_permutation(read.vnum);
+            for (int j = 0; j < temp.length; j++)
+                System.out.print(temp[j] + " ");
+            System.out.println();
+        }
         
         /* establish connection with server */
         /*
@@ -149,7 +157,7 @@ public class ZKPClient {
             Scanner sc = new Scanner(new FileReader(file));
             
             //number of vertices in g2
-            int vnum = Integer.parseInt(sc.nextLine());
+            vnum = Integer.parseInt(sc.nextLine());
             iso_perm = new HashMap<String, Integer>(100);
             
             //read g2 string
@@ -190,6 +198,7 @@ public class ZKPClient {
             iso_perm.put(s,iteration);
             
             //add isomorphism permutation, iteration still 0
+            sb = new StringBuilder(vnum);
             for (int i : isomorphism) {
                 sb.append(i);
             }
