@@ -20,6 +20,8 @@ public class ZKPClient {
     private int[][] rand_matrix;  //random number matrix to commit graph
     private int[][] sub_rand_matrix;
     
+    private HashMap<Integer[], Integer> iso_perm;    //random permutation to generate Graph Q
+    
     public ZKPClient(String addr) {
         sflag = 0;
         String serverAddress = addr; 
@@ -106,6 +108,7 @@ public class ZKPClient {
             
             //number of vertices in g2
             int vnum = Integer.parseInt(sc.nextLine());
+            iso_perm = new HashMap<Integer[], Integer>(100);
             
             //read g2 string
             String g2s = vnum + "|";
@@ -141,4 +144,9 @@ public class ZKPClient {
             System.exit(1);
         }
     }
+    
+    private int[] rand_array() {
+        return null;
+    }
+    
 }
