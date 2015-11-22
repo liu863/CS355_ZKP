@@ -22,6 +22,12 @@ public class ZKPClient {
     
     private HashMap<String, Integer> iso_perm;    //random permutation to generate Graph Q
     private Integer iteration;
+    
+    public ZKPClient() {
+    
+    }
+    
+    
     public ZKPClient(String addr) {
         sflag = 0;
         iteration = 0;
@@ -41,7 +47,11 @@ public class ZKPClient {
         //rand_matrix = gen_randmatrix(vnum);
         //sub_rand_matrix = gen_sub_randmatrix(rand_matrix, g2); 
         
+        ZKPClient read = new ZKPClient();
+        read.readgraph("graph.txt");
+        
         /* establish connection with server */
+        /*
         ZKPClient client = new ZKPClient(args[0]);
         client.readgraph(args[1]);
         String ret = client.send ("123");
@@ -52,10 +62,10 @@ public class ZKPClient {
         System.out.println("Client received : " + ret );
         ret = client.send ("789");
         System.out.println("Client received : " + ret );
-        
+        */
     }
 
-    public int[] rand_permutation(int vnum){
+    private int[] rand_permutation(int vnum){
         int[] permutation = new int[vnum];
         //ascending permutation
         for(int i = 0; i < vnum; i++){
@@ -148,10 +158,10 @@ public class ZKPClient {
             g2 = new Graph(g2s);
             
             //read subgraph array
-            String sub = sc.nextLine();
-            subgraph = new int[sub.length()];
-            for (int i = 0; i < sub.length(); i++) {
-                subgraph[i] = Character.getNumericValue(sub.charAt(i));
+            int sub_vnum = Integer.parseInt(sc.nextLine());
+            subgraph = new int[sub_vnum];
+            for (int i = 0; i < sub_vnum; i++) {
+                subgraph[i] = Integer.parseInt(sc.nextLine());
             }
             
             //read subgraph
@@ -160,8 +170,12 @@ public class ZKPClient {
             g2p = new Graph(g2ps);
             
             //read isomorphic permutation
-            String iso = sc.nextLine();
             isomorphism = new int[vnum];
+            for (int i = 0; i < vnum; i++) {
+                isomorphism[i] = Integer.parseInt(sc.nextLine());
+            }
+            
+            /*
             //add original permutation
             int[] permutation = new int[vnum];
             for(int i = 0; i < vnum; i++){
@@ -179,6 +193,7 @@ public class ZKPClient {
             for (int i = 0; i < vnum; i++) {
                 isomorphism[i] = Character.getNumericValue(iso.charAt(i));
             }
+            */
             
             //read g1
             String g1s = vnum + "|";
@@ -189,10 +204,6 @@ public class ZKPClient {
             System.out.println("File not found!");
             System.exit(1);
         }
-    }
-    
-    private int[] rand_array() {
-        return null;
     }
     
 }
