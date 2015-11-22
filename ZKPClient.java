@@ -21,9 +21,10 @@ public class ZKPClient {
     private int[][] sub_rand_matrix;
     
     private HashMap<Integer[], Integer> iso_perm;    //random permutation to generate Graph Q
-    
+    private int iteration;
     public ZKPClient(String addr) {
         sflag = 0;
+        iteration = 0;
         String serverAddress = addr; 
         try {
             s = new Socket(serverAddress, 2334);
@@ -52,6 +53,66 @@ public class ZKPClient {
         ret = client.send ("789");
         System.out.println("Client received : " + ret );
         
+    }
+    public static int[] rand_permutation(int vnum){
+        int[] permutation = new int[vnum];
+        //ascending permutation
+        for(int i = 0; i < vnum; i++){
+            permutation[i] = i;
+        }
+        /*
+         for(int array : permutation)
+         {
+         System.out.println(array);
+         
+         }
+         */
+        Random rand = new Random();
+        do{
+            for(int i = 0; i < vnum; i++){
+                int index = rand.nextInt(1+i);
+                int a = permutation[index];
+                permutation[index] = permutation[i];
+                permutation[i] = a;
+            }
+        }while(iso_perm.get(permutation)!=null);
+        
+        Integer[] copy  = new Integer[vnum];
+        for(int i = 0; i < vnum; i++){
+            copy[i] = permutation[i];
+        }
+        
+        iso_perm.put(copy, iteration);
+        iteration += 1;
+        
+        
+        return permutation;
+    }
+    public static int[] rand_permutation(int vnum){
+        int[] permutation = new int[vnum];
+        //ascending permutation
+        for(int i = 0; i < vnum; i++){
+            permutation[i] = i;
+        }
+        /*
+         for(int array : permutation)
+         {
+         System.out.println(array);
+         
+         }
+         */
+        Random rand = new Random();
+        do{
+        for(int i = 0; i < vnum; i++){
+            int index = rand.nextInt(1+i);
+            int a = permutation[index];
+            permutation[index] = permutation[i];
+            permutation[i] = a;
+        }
+        }while(iso_perm.get(permutation));
+        iso_perm.put(permutation, iteration);
+        iteration += 1;
+        return permutation;
     }
     
     public String send(String str) {
