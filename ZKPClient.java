@@ -50,7 +50,7 @@ public class ZKPClient {
         //sub_rand_matrix = gen_sub_randmatrix(rand_matrix, g2); 
         ZKPClient client = new ZKPClient(args[0]);
         String ret;
-        System.out.println("\n\n                  Zero-Knowledge Proog Verification");
+        System.out.println("\n\n                  Zero-Knowledge Proof Verification");
 
         while (true) {
 
