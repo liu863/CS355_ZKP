@@ -21,7 +21,7 @@ public class ZKPClient {
     private int[][] sub_rand_matrix;
     
     private HashMap<Integer[], Integer> iso_perm;    //random permutation to generate Graph Q
-    private int iteration;
+    private Integer iteration;
     public ZKPClient(String addr) {
         sflag = 0;
         iteration = 0;
@@ -54,20 +54,18 @@ public class ZKPClient {
         System.out.println("Client received : " + ret );
         
     }
-    public static int[] rand_permutation(int vnum){
+
+    public int[] rand_permutation(int vnum){
         int[] permutation = new int[vnum];
         //ascending permutation
         for(int i = 0; i < vnum; i++){
             permutation[i] = i;
         }
-        /*
-         for(int array : permutation)
-         {
-         System.out.println(array);
-         
-         }
-         */
+        
         Random rand = new Random();
+        StringBuilder sb = new StringBuilder(vnum);
+        String s;
+        
         do{
             for(int i = 0; i < vnum; i++){
                 int index = rand.nextInt(1+i);
@@ -75,43 +73,16 @@ public class ZKPClient {
                 permutation[index] = permutation[i];
                 permutation[i] = a;
             }
-        }while(iso_perm.get(permutation)!=null);
+            
+            for (int i : permutation) {
+                sb.append(i);
+            }
+            s = sb.toString();
+        }while(iso_perm.get(s)!=null);
         
-        Integer[] copy  = new Integer[vnum];
-        for(int i = 0; i < vnum; i++){
-            copy[i] = permutation[i];
-        }
-        
-        iso_perm.put(copy, iteration);
+        iso_perm.put(s, iteration);
         iteration += 1;
         
-        
-        return permutation;
-    }
-    public static int[] rand_permutation(int vnum){
-        int[] permutation = new int[vnum];
-        //ascending permutation
-        for(int i = 0; i < vnum; i++){
-            permutation[i] = i;
-        }
-        /*
-         for(int array : permutation)
-         {
-         System.out.println(array);
-         
-         }
-         */
-        Random rand = new Random();
-        do{
-        for(int i = 0; i < vnum; i++){
-            int index = rand.nextInt(1+i);
-            int a = permutation[index];
-            permutation[index] = permutation[i];
-            permutation[i] = a;
-        }
-        }while(iso_perm.get(permutation));
-        iso_perm.put(permutation, iteration);
-        iteration += 1;
         return permutation;
     }
     
@@ -191,6 +162,20 @@ public class ZKPClient {
             //read isomorphic permutation
             String iso = sc.nextLine();
             isomorphism = new int[vnum];
+            //add original permutation
+            int[] permutation = new int[vnum];
+            for(int i = 0; i < vnum; i++){
+                permutation[i] = i;
+            }
+            StringBuilder sb = new StringBuilder(vnum);
+            String s;
+            for (int i : permutation) {
+                sb.append(i);
+            }
+            s = sb.toString();
+            iso_perm.put(s,iteration);
+            iteration += 1;
+            
             for (int i = 0; i < vnum; i++) {
                 isomorphism[i] = Character.getNumericValue(iso.charAt(i));
             }
