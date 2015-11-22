@@ -48,14 +48,28 @@ public class ZKPClient {
         /* Initialize random matrix and flags */
         //rand_matrix = gen_randmatrix(vnum);
         //sub_rand_matrix = gen_sub_randmatrix(rand_matrix, g2); 
-        
-        ZKPClient read = new ZKPClient();
-        read.readgraph("graph.txt");
-        for (int i = 0; i < 100; i++) {
-            int[] temp = read.rand_permutation(read.vnum);
-            for (int j = 0; j < temp.length; j++)
-                System.out.print(temp[j] + " ");
-            System.out.println();
+        ZKPClient client = new ZKPClient(args[0]);
+        String ret;
+        System.out.println("\n\n                  Zero-Knowledge Proog Verification");
+
+        while (true) {
+
+            System.out.print("\n\n  Usage: Input filename to test; Input \"exit\" to quit\n\n  test-case file : ");
+            Console c = System.console();
+            String fileName = c.readLine();
+
+            if (fileName.equals("exit")){
+                ret = client.send("exit");
+                System.exit(0);
+            }
+            
+            ZKPClient read = new ZKPClient();
+            read.readgraph(fileName);
+            for (int i = 0; i < 100; i++) {
+                int[] temp = read.rand_permutation(read.vnum);
+                for (int j = 0; j < temp.length; j++)
+                    System.out.print(temp[j] + " ");
+                System.out.println();
         }
         
         /* establish connection with server */
@@ -65,9 +79,8 @@ public class ZKPClient {
         rand_matrix = gen_randmatrix(vnum);
         sub_rand_matrix = gen_sub_randmatrix(rand_matrix, g2); 
 
-        ZKPClient client = new ZKPClient(args[0]);
-
         while ( round < 100 ) {
+
             /* establish connection with server */
             int[] qiso = rand_permutation(vnum); //pi
             int[] alpha = genAlpha(qiso, isomorphism);
@@ -79,7 +92,7 @@ public class ZKPClient {
             Graph HQp = Qp.commitment(sub_rand_matrix);
 
             // send G1, G2
-            String ret = client.send("g1g2|" + g1.toString() + "|" + g2.toString());
+            ret = client.send("g1g2|" + g1.toString() + "|" + g2.toString());
             System.out.println("clintmsg>> " + ret );
 
             // send HQ
@@ -101,20 +114,18 @@ public class ZKPClient {
                 String s = arraytoString(alpha, vnum);
                 ret = client.send("prf|" + Qp.toString() + "|" +  s + "|" + darraytoString(sub_rand_matrix, vnum) );
             }
-            System.out.println("clintmsg>>  " + ret );
+            System.out.println("clintmsg>> " + ret );
             if ( ret.equals("true") ) {
                 round ++;
-                continue;
             }
             else {
-                System.out.println("ZKP verification failed!");
-                ret = client.send("exit");
-                System.out.println("clintmsg>>  " + ret );
+                System.out.println("\n\n---------------------------\n\n  ZKP verification Failed!\n\n---------------------------");
+                break;
             }
         }
-        System.out.println("ZKP verification Succeed!");
-        String ret = client.send("exit");
-        System.out.println("clintmsg>>  " + ret );
+        if ( round == 100 )
+            System.out.println("\n\n---------------------------\n\n  ZKP verification Passed!\n\n---------------------------");
+    }
     }
 
     private static int[] rand_permutation(int vnum){
